@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/hcsouza/bard/weather"
+)
 
 func main() {
-	fmt.Println("First Song")
+	style := weather.TemperatureByCityName("caçapava")
+	fmt.Println("Music Style: ", style)
 }
