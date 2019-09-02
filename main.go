@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/hcsouza/bard/handlers"
 	"github.com/hcsouza/bard/shield"
@@ -28,7 +27,9 @@ func setupHandlers() *mux.Router {
 
 func main() {
 	r := setupHandlers()
-	fmt.Println("==> Main server is started")
+
+	log.Println("==> Main server is started")
 	log.Println("listening on :8088")
+
 	http.ListenAndServe(":8088", r)
 }

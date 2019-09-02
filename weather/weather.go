@@ -3,9 +3,9 @@ package weather
 import (
 	"encoding/json"
 	"fmt"
+	. "github.com/hcsouza/bard/config"
 	"github.com/hcsouza/bard/shield"
 	"log"
-	"math/rand"
 )
 
 var (
@@ -50,22 +50,12 @@ func TemperatureByCityName(city string) (temperature float32, err error) {
 
 func (client weatherClient) TemperatureByCityName(city string) (temperature float32, err error) {
 	var result weatherResult
-	var uriBase string
 
-	chaosMonkey := rand.Intn(10)
-	if chaosMonkey > 1 {
-		uriBase = "http://apiaaa.openweathermap.org/data/2.5/weather"
-	} else {
-		uriBase = "http://api.openweathermap.org/data/2.5/weather"
-	}
-	log.Println(uriBase)
-
-	apiKey := "69075f27ec95ce1dcd970bfc4eb5233f"
-	search := fmt.Sprintf("%s?q=%s&appid=%s&units=metric", uriBase, city, apiKey)
+	searchUrl := createUrlRequestByCityName(city)
 
 	request := shield.CommandRequest{
 		"TemperatureByCityName",
-		search,
+		searchUrl,
 		"GET",
 	}
 
@@ -85,22 +75,12 @@ func (client weatherClient) TemperatureByCityName(city string) (temperature floa
 
 func (client weatherClient) TemperatureByCityCoord(coords Coordinates) (temperature float32, err error) {
 	var result weatherResult
-	var uriBase string
 
-	chaosMonkey := rand.Intn(10)
-	if chaosMonkey > -2 {
-		uriBase = "http://apiaaa.openweathermap.org/data/2.5/weather"
-	} else {
-		uriBase = "http://api.openweathermap.org/data/2.5/weather"
-	}
-	log.Println(uriBase)
-
-	apiKey := "69075f27ec95ce1dcd970bfc4eb5233f"
-	search := fmt.Sprintf("%s?lat=%v&lon=%v&appid=%s&units=metric", uriBase, coords.Latitude, coords.Longitude, apiKey)
+	searchUrl := createUrlRequestByCoord(coords)
 
 	request := shield.CommandRequest{
 		"TemperatureByCityCoord",
-		search,
+		searchUrl,
 		"GET",
 	}
 
@@ -117,6 +97,29 @@ func (client weatherClient) TemperatureByCityCoord(coords Coordinates) (temperat
 
 	return temperature, err
 
+}
+
+func createUrlRequestByCoord(coords Coordinates) string {
+
+	uriBase := Config.WeatherApi.Url
+	apiKey := Config.WeatherApi.Appid
+
+	search := fmt.Sprintf("%s?lat=%v", uriBase, coords.Latitude)
+	search = fmt.Sprintf("%s&lon=%v&appid=%s", search, coords.Longitude, apiKey)
+	search = fmt.Sprintf("%s&units=metric", search)
+
+	return search
+}
+
+func createUrlRequestByCityName(cityName string) string {
+
+	uriBase := Config.WeatherApi.Url
+	apiKey := Config.WeatherApi.Appid
+
+	search := fmt.Sprintf("%s?q=%s&appid=%s", uriBase, cityName, apiKey)
+	search = fmt.Sprintf("%s&units=metric", search)
+
+	return search
 }
 
 func (client weatherClient) MusicStyleByTemperature(temperature float32) string {
