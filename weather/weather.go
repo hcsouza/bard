@@ -49,10 +49,9 @@ func TemperatureByCityName(city string) (temperature float32, err error) {
 }
 
 func (client weatherClient) TemperatureByCityName(city string) (temperature float32, err error) {
+
 	var result weatherResult
-
 	searchUrl := createUrlRequestByCityName(city)
-
 	request := shield.CommandRequest{
 		"TemperatureByCityName",
 		searchUrl,
@@ -64,18 +63,14 @@ func (client weatherClient) TemperatureByCityName(city string) (temperature floa
 		return 0, err
 	}
 
-	err = json.Unmarshal([]byte(buffer), &result)
-	if err != nil {
-		log.Println("Error on UnMarshall json Weather:  ", err)
-	}
+	result, err = client.parseJsonToResult(buffer)
 	temperature = result.Main.Temp
-
 	return temperature, err
 }
 
 func (client weatherClient) TemperatureByCityCoord(coords Coordinates) (temperature float32, err error) {
-	var result weatherResult
 
+	var result weatherResult
 	searchUrl := createUrlRequestByCoord(coords)
 
 	request := shield.CommandRequest{
@@ -89,14 +84,19 @@ func (client weatherClient) TemperatureByCityCoord(coords Coordinates) (temperat
 		return 0, err
 	}
 
-	err = json.Unmarshal([]byte(buffer), &result)
+	result, err = client.parseJsonToResult(buffer)
+	temperature = result.Main.Temp
+	return temperature, err
+}
+
+func (client weatherClient) parseJsonToResult(jsonApi []byte) (result weatherResult, err error) {
+
+	err = json.Unmarshal([]byte(jsonApi), &result)
 	if err != nil {
 		log.Println("Error on UnMarshall json Weather:  ", err)
+		return
 	}
-	temperature = result.Main.Temp
-
-	return temperature, err
-
+	return result, err
 }
 
 func createUrlRequestByCoord(coords Coordinates) string {
