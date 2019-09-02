@@ -5,7 +5,8 @@ development:
   tty: true
   stdin_open: true
   command: >
-    bash -c "tail -f /var/log/apt/history.log"
+    bash -c "dep ensure --vendor-only &&
+    tail -f /var/log/apt/history.log"
   volumes:
     - .:/go/src/github.com/hcsouza/bard
   environment:
