@@ -1,0 +1,14 @@
+development: &development
+  WeatherApi:
+    Appid: "69075f27ec95ce1dcd970bfc4eb5233f"
+    Url: "http://api.openweathermap.org/data/2.5/weather"
+  SpotifyApi:
+    ClientId: "34567"
+    SecretKey: "456uio"
+
+staging:
+  <<: *development
+
+production:
+  <<: *development
+

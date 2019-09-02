@@ -7,6 +7,8 @@ development:
   command: >
     bash -c "tail -f /var/log/apt/history.log"
   volumes:
-    - .:/go/
+    - .:/go/src/github.com/hcsouza/bard
+  environment:
+    ENV: "development"
 
 
