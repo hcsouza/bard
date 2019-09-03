@@ -29,6 +29,9 @@ type weatherResult struct {
 		TempMin  float32 `json:"temp_min"`
 		TempMax  float32 `json:"temp_max"`
 	} `json:"main"`
+	Sys struct {
+		Country string `json:"country"`
+	} `json:"sys"`
 }
 
 type Coordinates struct {
@@ -42,15 +45,14 @@ func NewWeatherClient() weatherClient {
 	return weatherClient{}
 }
 
-func TemperatureByCityName(city string) (temperature float32, err error) {
+func TemperatureByCityName(city string) (weather weatherResult, err error) {
 	client := NewWeatherClient()
-	temperature, err = client.TemperatureByCityName(city)
+	weather, err = client.WeatherByCityName(city)
 	return
 }
 
-func (client weatherClient) TemperatureByCityName(city string) (temperature float32, err error) {
+func (client weatherClient) WeatherByCityName(city string) (weatherResult, error) {
 
-	var result weatherResult
 	searchUrl := createUrlRequestByCityName(city)
 	request := shield.CommandRequest{
 		"TemperatureByCityName",
@@ -60,19 +62,15 @@ func (client weatherClient) TemperatureByCityName(city string) (temperature floa
 
 	buffer, err := shield.ExecuteCommandWithCircuitBreaker(request)
 	if err != nil {
-		return 0, err
+		return weatherResult{}, err
 	}
 
-	result, err = client.parseJsonToResult(buffer)
-	temperature = result.Main.Temp
-	return temperature, err
+	return client.parseJsonToResult(buffer)
 }
 
-func (client weatherClient) TemperatureByCityCoord(coords Coordinates) (temperature float32, err error) {
+func (client weatherClient) WeatherByCityCoord(coords Coordinates) (weatherResult, error) {
 
-	var result weatherResult
 	searchUrl := createUrlRequestByCoord(coords)
-
 	request := shield.CommandRequest{
 		"TemperatureByCityCoord",
 		searchUrl,
@@ -81,12 +79,10 @@ func (client weatherClient) TemperatureByCityCoord(coords Coordinates) (temperat
 
 	buffer, err := shield.ExecuteCommandWithCircuitBreaker(request)
 	if err != nil {
-		return 0, err
+		return weatherResult{}, err
 	}
 
-	result, err = client.parseJsonToResult(buffer)
-	temperature = result.Main.Temp
-	return temperature, err
+	return client.parseJsonToResult(buffer)
 }
 
 func (client weatherClient) parseJsonToResult(jsonApi []byte) (result weatherResult, err error) {

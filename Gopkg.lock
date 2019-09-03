@@ -22,6 +22,14 @@
   version = "v1.4.7"
 
 [[projects]]
+  digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  pruneopts = "UT"
+  revision = "6c65a5562fc06764971b7c5d05c76c75e84bdbf7"
+  version = "v1.3.2"
+
+[[projects]]
   digest = "1:cbec35fe4d5a4fba369a656a8cd65e244ea2c743007d8f6c1ccb132acf9d1296"
   name = "github.com/gorilla/mux"
   packages = ["."]
@@ -117,6 +125,37 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:66c51948dfa4d5bc2d997decf2338133d98798074208581ca06b91357c9bc268"
+  name = "github.com/zmb3/spotify"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5159bf56b13dec33353d18e2903f44f3c1fd6363"
+
+[[projects]]
+  branch = "master"
+  digest = "1:f8b491a7c25030a895a0e579742d07136e6958e77ef2d46e769db8eec4e58fcd"
+  name = "golang.org/x/net"
+  packages = [
+    "context",
+    "context/ctxhttp",
+  ]
+  pruneopts = "UT"
+  revision = "ba9fcec4b297b415637633c5a6e8fa592e4a16c3"
+
+[[projects]]
+  branch = "master"
+  digest = "1:457f9784b7d0402c051d4af2aa29b9ac602129801b0e4a643006d294f40775ec"
+  name = "golang.org/x/oauth2"
+  packages = [
+    ".",
+    "clientcredentials",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "0f29369cfe4552d0e4bcddc57cc75f4d7e672a33"
+
+[[projects]]
+  branch = "master"
   digest = "1:b8340ec580cc3c81782c6c46ad20bf17c4b567be60cc2901e8bc220a8b473de1"
   name = "golang.org/x/sys"
   packages = ["unix"]
@@ -137,6 +176,22 @@
   pruneopts = "UT"
   revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
   version = "v0.3.2"
+
+[[projects]]
+  digest = "1:6eb6e3b6d9fffb62958cf7f7d88dbbe1dd6839436b0802e194c590667a40412a"
+  name = "google.golang.org/appengine"
+  packages = [
+    "internal",
+    "internal/base",
+    "internal/datastore",
+    "internal/log",
+    "internal/remote_api",
+    "internal/urlfetch",
+    "urlfetch",
+  ]
+  pruneopts = "UT"
+  revision = "5f2a59506353b8d5ba8cbbcd9f3c1f41f1eaf079"
+  version = "v1.6.2"
 
 [[projects]]
   digest = "1:7ce1e9810f5e9ef49e040c031d24b948a3a87233b14cff74ca93fc0f839ef900"
@@ -161,6 +216,8 @@
     "github.com/afex/hystrix-go/hystrix",
     "github.com/gorilla/mux",
     "github.com/spf13/viper",
+    "github.com/zmb3/spotify",
+    "golang.org/x/oauth2/clientcredentials",
     "gopkg.in/eapache/go-resiliency.v1/retrier",
   ]
   solver-name = "gps-cdcl"
