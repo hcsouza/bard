@@ -37,6 +37,13 @@ func setupCommands() {
 		SleepWindow:            1000,
 		ErrorPercentThreshold:  10,
 	})
+	hystrix.ConfigureCommand("PlaylistByCountry", hystrix.CommandConfig{
+		Timeout:                50000,
+		MaxConcurrentRequests:  300,
+		RequestVolumeThreshold: 1,
+		SleepWindow:            1000,
+		ErrorPercentThreshold:  10,
+	})
 }
 
 func StartMonitoring() {

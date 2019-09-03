@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/hcsouza/bard/music"
 	"github.com/hcsouza/bard/weather"
 	"log"
 	"net/http"
@@ -22,19 +23,12 @@ func MusicByCityNameHandler(w http.ResponseWriter, request *http.Request) {
 	}
 	styleName := weatherClient.MusicStyleByTemperature(temperature)
 
+	data, err := music.PlaylistByStyleAndCountry(styleName, "br")
 	//Search from SpotifyApp
 	//#Success
 	// return Json, with track list
 	//#fail
 	// return cached-fallback
-
-	//Retorno do Handler
-	data := struct {
-		Music string `json:"music"`
-	}{
-		styleName,
-	}
-
 	if err == nil {
 		json.NewEncoder(w).Encode(data)
 	} else {
