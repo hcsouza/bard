@@ -57,7 +57,7 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 
 	select {
 	case out := <-chSuccess:
-		log.Println("Successful call on :PlaylistByCountry")
+		log.Println("Successful call on PlaylistByCountry")
 		return parseResultToPlayList(out)
 	case err := <-errors:
 		return Playlist{}, err

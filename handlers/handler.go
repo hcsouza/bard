@@ -17,13 +17,13 @@ func MusicByCityNameHandler(w http.ResponseWriter, request *http.Request) {
 	cityName := vars["name"]
 
 	weatherClient := weather.NewWeatherClient()
-	temperature, err := weatherClient.TemperatureByCityName(cityName)
+	weather, err := weatherClient.WeatherByCityName(cityName)
 	if err != nil {
 		log.Println("Return Cached-Fallback")
 	}
-	styleName := weatherClient.MusicStyleByTemperature(temperature)
+	styleName := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
 
-	data, err := music.PlaylistByStyleAndCountry(styleName, "br")
+	data, err := music.PlaylistByStyleAndCountry(styleName, weather.Sys.Country)
 	//Search from SpotifyApp
 	//#Success
 	// return Json, with track list
@@ -58,25 +58,17 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 	}
 
 	weatherClient := weather.NewWeatherClient()
-	temperature, err := weatherClient.TemperatureByCityCoord(coords)
+	weather, err := weatherClient.WeatherByCityCoord(coords)
 	if err != nil {
 		log.Println("Return Cached-Fallback")
 	}
-	styleName := weatherClient.MusicStyleByTemperature(temperature)
-
+	styleName := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
+	data, err := music.PlaylistByStyleAndCountry(styleName, weather.Sys.Country)
 	//Search from SpotifyApp
 	//#Success
 	// return Json, with track list
 	//#fail
 	// return cached-fallback
-
-	//Retorno do Handler
-	data := struct {
-		Music string `json:"music"`
-	}{
-		styleName,
-	}
-
 	if err == nil {
 		json.NewEncoder(w).Encode(data)
 	} else {
