@@ -14,6 +14,14 @@
   revision = "fa1af6a1f4f56e0e50d427fe901cd604d8c6fb8a"
 
 [[projects]]
+  branch = "master"
+  digest = "1:f98385a9b77f6cacae716a59c04e6ac374d101466d4369c4e8cc706a39c4bb2e"
+  name = "github.com/bradfitz/gomemcache"
+  packages = ["memcache"]
+  pruneopts = "UT"
+  revision = "551aad21a6682b95329c1f5bd62ee5060d64f7e8"
+
+[[projects]]
   digest = "1:abeb38ade3f32a92943e5be54f55ed6d6e3b6602761d74b4aab4c9dd45c18abd"
   name = "github.com/fsnotify/fsnotify"
   packages = ["."]
@@ -79,6 +87,14 @@
   pruneopts = "UT"
   revision = "728039f679cbcd4f6a54e080d2219a4c4928c546"
   version = "v1.4.0"
+
+[[projects]]
+  digest = "1:ced1b47e3ae037777d06a00af7721d36de1670b8145b17e8e0691768da7e6659"
+  name = "github.com/sarulabs/di"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "bc5c1d2edc7b42440323a3f1c003f629ee589927"
+  version = "v2.2.0"
 
 [[projects]]
   digest = "1:bb495ec276ab82d3dd08504bbc0594a65de8c3b22c6f2aaa92d05b73fbf3a82e"
@@ -214,7 +230,9 @@
   analyzer-version = 1
   input-imports = [
     "github.com/afex/hystrix-go/hystrix",
+    "github.com/bradfitz/gomemcache/memcache",
     "github.com/gorilla/mux",
+    "github.com/sarulabs/di",
     "github.com/spf13/viper",
     "github.com/zmb3/spotify",
     "golang.org/x/oauth2/clientcredentials",

@@ -11,5 +11,12 @@ development:
     - .:/go/src/github.com/hcsouza/bard
   environment:
     ENV: "development"
+  links:
+    - memcached:memcached
+
+memcached:
+  image: memcached
+  ports:
+    - "11211:11211"
 
 
