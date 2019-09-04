@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/gorilla/mux"
 	"github.com/hcsouza/bard/handlers"
+	. "github.com/hcsouza/bard/logger"
 	"github.com/hcsouza/bard/shield"
-	"log"
 	"net/http"
 )
 
@@ -28,8 +28,8 @@ func setupHandlers() *mux.Router {
 func main() {
 	r := setupHandlers()
 
-	log.Println("==> Main server is started")
-	log.Println("listening on :8088")
+	Logger.Message("==> Main server is started")
+	Logger.Message("listening on :8088")
 
 	http.ListenAndServe(":8088", r)
 }

@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"github.com/afex/hystrix-go/hystrix"
 	. "github.com/hcsouza/bard/config"
+	. "github.com/hcsouza/bard/logger"
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2/clientcredentials"
-	"log"
 )
 
 type Music struct {
@@ -29,7 +29,7 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 	}
 	token, err := config.Token(context.Background())
 	if err != nil {
-		log.Println("Couldn't get app music token: ", err)
+		Logger.Error(fmt.Sprintf("Couldn't get app music token: %s", err))
 	}
 
 	client := spotify.Authenticator{}.NewClient(token)
@@ -43,7 +43,7 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 		func() error {
 			results, err := client.SearchOpt(query, spotify.SearchTypeTrack, opts)
 			if err != nil {
-				log.Println("Error on Search Tracks: ", err)
+				Logger.Error(fmt.Sprintf("Error on Search Tracks: %s", err))
 				return err
 			}
 
@@ -51,13 +51,13 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 			return nil
 		},
 		func(err error) error {
-			log.Println(fmt.Sprintf("Fallback for %s, with error: %s", "PlaylistByCountry", err.Error()))
+			Logger.Error(fmt.Sprintf("Fallback for %s, with error: %s", "PlaylistByCountry", err.Error()))
 			return err
 		})
 
 	select {
 	case out := <-chSuccess:
-		log.Println("Successful call on PlaylistByCountry")
+		Logger.Info("Successful call on PlaylistByCountry")
 		return parseResultToPlayList(out)
 	case err := <-errors:
 		return Playlist{}, err

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	. "github.com/hcsouza/bard/config"
+	. "github.com/hcsouza/bard/logger"
 	"github.com/hcsouza/bard/shield"
-	"log"
 )
 
 var (
@@ -89,7 +89,7 @@ func (client weatherClient) parseJsonToResult(jsonApi []byte) (result weatherRes
 
 	err = json.Unmarshal([]byte(jsonApi), &result)
 	if err != nil {
-		log.Println("Error on UnMarshall json Weather:  ", err)
+		Logger.Error(fmt.Sprintf("Error on UnMarshall json Weather: %s", err))
 		return
 	}
 	return result, err

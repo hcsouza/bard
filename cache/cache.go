@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
 	. "github.com/hcsouza/bard/config"
+	. "github.com/hcsouza/bard/logger"
 	"github.com/hcsouza/bard/music"
-	"log"
 )
 
 type Client struct {
@@ -22,18 +22,18 @@ func (client *Client) AddTracksByCountryAndGenre(country, genre string, playlist
 
 	bytes, err := json.Marshal(&playlist)
 	if err != nil {
-		log.Println("Error on serialize tracks: ", err)
+		Logger.Error(fmt.Sprintf("Error on serialize tracks: %s", err))
 	}
 	itemKey := fmt.Sprintf("%s:%s", country, genre)
 	serialized := &memcache.Item{Key: itemKey, Value: []byte(bytes)}
 
 	err = client.memcacheClient.Set(serialized)
 	if err != nil {
-		log.Println("Error on Set serialized to cache: ", err)
+		Logger.Error(fmt.Sprintf("Error on Set serialized to cache: %s", err))
 		return err
 	}
 	msg := fmt.Sprintf("Tracks for genre: %s on country: %s, adde to cache.", genre, country)
-	log.Println(msg)
+	Logger.Info(msg)
 	return err
 }
 
@@ -43,16 +43,16 @@ func (client *Client) TracksByCountryAndGenre(country, genre string) (music.Play
 
 	it, err := client.memcacheClient.Get(searchKey)
 	if err != nil {
-		log.Println("Error on Get from memcache:, ", err)
+		Logger.Error(fmt.Sprintf("Error on Get from memcache: %s ", err))
 		return result, err
 	}
 
 	err = json.Unmarshal([]byte(it.Value), &result)
 	if err != nil {
-		log.Println("Error on UnMarshall from memcache:, ", err)
+		Logger.Error(fmt.Sprintf("Error on UnMarshall from memcache: %s ", err))
 		return result, err
 	}
 	msg := fmt.Sprintf("Tracks for genre: %s on country: %s, founded on cache.", genre, country)
-	log.Println(msg)
+	Logger.Info(msg)
 	return result, err
 }

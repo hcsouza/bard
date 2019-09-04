@@ -2,12 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/hcsouza/bard/cache"
 	"github.com/hcsouza/bard/injection"
+	. "github.com/hcsouza/bard/logger"
 	"github.com/hcsouza/bard/music"
 	"github.com/hcsouza/bard/weather"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -21,7 +22,7 @@ func MusicByCityNameHandler(w http.ResponseWriter, request *http.Request) {
 	weatherClient := weather.NewWeatherClient()
 	weather, err := weatherClient.WeatherByCityName(cityName)
 	if err != nil {
-		log.Println("Return Cached-Fallback")
+		Logger.Warn("Return Cached-Fallback")
 	}
 
 	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
@@ -30,7 +31,7 @@ func MusicByCityNameHandler(w http.ResponseWriter, request *http.Request) {
 	if err == nil {
 		json.NewEncoder(w).Encode(playlist)
 	} else {
-		log.Println("Error on get Temperature: ", err)
+		Logger.Error(fmt.Sprintf("Error on get Temperature: %s", err))
 		json.NewEncoder(w).Encode(struct {
 			Music string `json:"music"`
 		}{"none"})
@@ -46,26 +47,29 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 	if err == nil {
 		coords.Latitude = float32(value)
 	} else {
-		log.Println("Params wrong format: ", err)
+		Logger.Error(fmt.Sprintf("Params wrong format: %s", err))
+		//RETORNAR HTTP STATUS BAD REQUEST
 	}
 	value, err = strconv.ParseFloat(vars["lon"], 32)
 	if err == nil {
 		coords.Longitude = float32(value)
 	} else {
-		log.Println("Params wrong format: ", err)
+		Logger.Error(fmt.Sprintf("Params wrong format: %s", err))
+		//RETORNAR HTTP STATUS BAD REQUEST
 	}
 
 	weatherClient := weather.NewWeatherClient()
 	weather, err := weatherClient.WeatherByCityCoord(coords)
 	if err != nil {
-		log.Println("Return Cached-Fallback")
+		Logger.Warn("Return Cached-Fallback")
 	}
 	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
 	playlist, err := playlistByStyleAndCountry(genre, weather.Sys.Country)
+
 	if err == nil {
 		json.NewEncoder(w).Encode(playlist)
 	} else {
-		log.Println("Error on get Temperature: ", err)
+		Logger.Error(fmt.Sprintf("Error on get Temperature: %s", err))
 		json.NewEncoder(w).Encode(struct {
 			Music string `json:"music"`
 		}{"none"})
