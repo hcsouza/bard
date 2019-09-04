@@ -2,8 +2,8 @@ package injection
 
 import (
 	"github.com/hcsouza/bard/cache"
+	. "github.com/hcsouza/bard/logger"
 	"github.com/sarulabs/di"
-	"log"
 )
 
 var Services = []di.Def{
@@ -26,7 +26,7 @@ func init() {
 func CreateContainer() di.Container {
 	builder, err := di.NewBuilder()
 	if err != nil {
-		log.Println(err.Error())
+		Logger.Error(err.Error())
 	}
 	_ = builder.Add(Services...)
 	return builder.Build()

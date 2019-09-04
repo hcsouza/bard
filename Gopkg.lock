@@ -15,6 +15,22 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:6ad094cbcdd81b4c2eb3e390be42a43bbd384b6085ac61bd403073a3f4ba5c20"
+  name = "github.com/araddon/gou"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c797efecbb6162ea2d4200cdf779c8b73da7233c"
+
+[[projects]]
+  branch = "master"
+  digest = "1:d48cc03a21c4a768e554f378f0061f7b3000b68ee8fc804040cb0de76574d3ca"
+  name = "github.com/bitly/go-hostpool"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a3a6125de9329587178a9792dc8f4bc98e620d2d"
+
+[[projects]]
+  branch = "master"
   digest = "1:f98385a9b77f6cacae716a59c04e6ac374d101466d4369c4e8cc706a39c4bb2e"
   name = "github.com/bradfitz/gomemcache"
   packages = ["memcache"]
@@ -73,6 +89,22 @@
   version = "v1.8.1"
 
 [[projects]]
+  branch = "master"
+  digest = "1:7f316b23a111ef33871ff4180406178c436099778e0fa81f772d6962063fd232"
+  name = "github.com/mattbaird/elastigo"
+  packages = ["lib"]
+  pruneopts = "UT"
+  revision = "2fe47fd29e4b70353f852ede77a196830d2924ec"
+
+[[projects]]
+  digest = "1:36325ebb862e0382f2f14feef409ba9351271b89ada286ae56836c603d43b59c"
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "e1f7b56ace729e4a73a29a6b4fac6cd5fcda7ab3"
+  version = "v0.0.9"
+
+[[projects]]
   digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
@@ -89,12 +121,35 @@
   version = "v1.4.0"
 
 [[projects]]
+  digest = "1:061a10a76b0e34283ce6b0abbd8ad83e02cc8c2f46c56ce584ade36918f4078c"
+  name = "github.com/sadlil/gologger"
+  packages = [
+    ".",
+    "logger",
+    "printer",
+    "printer/console",
+    "printer/es",
+    "printer/file",
+  ]
+  pruneopts = "UT"
+  revision = "e2f17a20cc0161bf59fd5e4d7b403ca9cf2dce2c"
+  version = "v0"
+
+[[projects]]
   digest = "1:ced1b47e3ae037777d06a00af7721d36de1670b8145b17e8e0691768da7e6659"
   name = "github.com/sarulabs/di"
   packages = ["."]
   pruneopts = "UT"
   revision = "bc5c1d2edc7b42440323a3f1c003f629ee589927"
   version = "v2.2.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:44fbfce27cb96b7d20217634af466093485a3e8132820acbe95949cb64e7fc60"
+  name = "github.com/shiena/ansicolor"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a422bbe96644373c5753384a59d678f7d261ff10"
 
 [[projects]]
   digest = "1:bb495ec276ab82d3dd08504bbc0594a65de8c3b22c6f2aaa92d05b73fbf3a82e"
@@ -232,6 +287,7 @@
     "github.com/afex/hystrix-go/hystrix",
     "github.com/bradfitz/gomemcache/memcache",
     "github.com/gorilla/mux",
+    "github.com/sadlil/gologger",
     "github.com/sarulabs/di",
     "github.com/spf13/viper",
     "github.com/zmb3/spotify",

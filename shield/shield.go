@@ -3,9 +3,9 @@ package shield
 import (
 	"fmt"
 	"github.com/afex/hystrix-go/hystrix"
+	. "github.com/hcsouza/bard/logger"
 	"gopkg.in/eapache/go-resiliency.v1/retrier"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"time"
@@ -61,13 +61,13 @@ func ExecuteCommandWithCircuitBreaker(commandRequest CommandRequest) ([]byte, er
 			return DoCallRequestWithRetries(request, chSuccess)
 		},
 		func(err error) error {
-			log.Println(fmt.Sprintf("Fallback for %s, with error: %s", commandRequest.Name, err.Error()))
+			Logger.Error(fmt.Sprintf("Fallback for %s, with error: %s", commandRequest.Name, err.Error()))
 			return err
 		})
 
 	select {
 	case out := <-chSuccess:
-		log.Println("Successful call on", commandRequest.Name)
+		Logger.Info(fmt.Sprintf("Successful call on %s", commandRequest.Name))
 		return out, nil
 
 	case err := <-errors:
