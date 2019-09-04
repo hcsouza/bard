@@ -3,6 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/hcsouza/bard/cache"
+	"github.com/hcsouza/bard/injection"
 	"github.com/hcsouza/bard/music"
 	"github.com/hcsouza/bard/weather"
 	"log"
@@ -21,16 +23,12 @@ func MusicByCityNameHandler(w http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Println("Return Cached-Fallback")
 	}
-	styleName := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
 
-	data, err := music.PlaylistByStyleAndCountry(styleName, weather.Sys.Country)
-	//Search from SpotifyApp
-	//#Success
-	// return Json, with track list
-	//#fail
-	// return cached-fallback
+	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
+	playlist, err := playlistByStyleAndCountry(genre, weather.Sys.Country)
+
 	if err == nil {
-		json.NewEncoder(w).Encode(data)
+		json.NewEncoder(w).Encode(playlist)
 	} else {
 		log.Println("Error on get Temperature: ", err)
 		json.NewEncoder(w).Encode(struct {
@@ -62,19 +60,27 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Println("Return Cached-Fallback")
 	}
-	styleName := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
-	data, err := music.PlaylistByStyleAndCountry(styleName, weather.Sys.Country)
-	//Search from SpotifyApp
-	//#Success
-	// return Json, with track list
-	//#fail
-	// return cached-fallback
+	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
+	playlist, err := playlistByStyleAndCountry(genre, weather.Sys.Country)
 	if err == nil {
-		json.NewEncoder(w).Encode(data)
+		json.NewEncoder(w).Encode(playlist)
 	} else {
 		log.Println("Error on get Temperature: ", err)
 		json.NewEncoder(w).Encode(struct {
 			Music string `json:"music"`
 		}{"none"})
 	}
+}
+
+func playlistByStyleAndCountry(genre, country string) (music.Playlist, error) {
+	cacheClient := injection.Get("CacheClient").(*cache.Client)
+	result, err := cacheClient.TracksByCountryAndGenre(country, genre)
+	if err == nil {
+		return result, err
+	}
+	playlist, err := music.PlaylistByStyleAndCountry(genre, country)
+	if err == nil {
+		cacheClient.AddTracksByCountryAndGenre(country, genre, playlist)
+	}
+	return playlist, err
 }

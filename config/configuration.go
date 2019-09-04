@@ -9,6 +9,7 @@ import (
 type Configuration struct {
 	WeatherApi WeatherApiConfiguration
 	SpotifyApi SpotifyApiConfiguration
+	Memcache   MemcacheConfiguration
 }
 
 type WeatherApiConfiguration struct {
@@ -19,6 +20,10 @@ type WeatherApiConfiguration struct {
 type SpotifyApiConfiguration struct {
 	ClientId  string
 	SecretKey string
+}
+
+type MemcacheConfiguration struct {
+	Host string
 }
 
 var Config Configuration
