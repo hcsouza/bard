@@ -7,9 +7,14 @@ import (
 )
 
 type Configuration struct {
+	BardApi    BardApiConfiguration
 	WeatherApi WeatherApiConfiguration
 	SpotifyApi SpotifyApiConfiguration
 	Memcache   MemcacheConfiguration
+}
+
+type BardApiConfiguration struct {
+	Port string
 }
 
 type WeatherApiConfiguration struct {
