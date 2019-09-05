@@ -8,7 +8,7 @@ development: &development
     ClientId: "dbe6"
     SecretKey: "6556"
   Memcache:
-    Host: "172.17.0.2:11211"
+    Host: "memcache:11211"
 
 staging:
   <<: *development

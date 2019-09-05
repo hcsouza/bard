@@ -35,6 +35,9 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 	client := spotify.Authenticator{}.NewClient(token)
 
 	limit := 5
+	if country == "" {
+		country = "br"
+	}
 	opts := &spotify.Options{Country: &country, Limit: &limit}
 	query := fmt.Sprintf("genre:%s", musicStyle)
 

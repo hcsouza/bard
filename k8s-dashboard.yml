@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bard-metrics-dash
+  labels:
+    app: bard-metrics-dash
+spec:
+  containers:
+  - name: bard-metrics-dash
+    image: grissomsh/hystrix-dashboard:latest
+    ports:
+    - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bard-metrics-dash
+spec:
+  type: NodePort
+  ports:
+  - name:http:
+    port: 9090
+    targetPort: 8080
+  selector:
+    app: bard-metrics-dash

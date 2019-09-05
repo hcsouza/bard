@@ -1,0 +1,36 @@
+
+FROM golang:latest as builder
+
+LABEL maintainer="Hugo Souza <hcsouza@gmail.com>"
+
+ENV GOPATH=/go
+
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+
+RUN mkdir -p /go/src/github.com/hcsouza/bard
+
+WORKDIR /go/src/github.com/hcsouza/bard
+
+COPY ./Gopkg.toml ./
+
+COPY ./Gopkg.lock ./
+
+COPY ./config.yml ./
+
+RUN dep ensure --vendor-only
+
+COPY . /go/src/github.com/hcsouza/bard/
+
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+######## Start a new stage from scratch #######
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+RUN apk add --no-cache curl
+
+WORKDIR /root/
+COPY --from=builder /go/src/github.com/hcsouza/bard/main .
+COPY --from=builder /go/src/github.com/hcsouza/bard/config.yml .
+EXPOSE 8088
+ENV ENV=development
+CMD ["./main"]
