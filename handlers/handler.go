@@ -29,6 +29,9 @@ func MusicByCityNameHandler(w http.ResponseWriter, request *http.Request) {
 	weather, err := weatherClient.WeatherByCityName(cityName)
 	if err != nil {
 		Logger.Warn("Return Cached-Fallback")
+		playlist, _ := GetFallBackPlayList()
+		json.NewEncoder(w).Encode(playlist)
+		return
 	}
 
 	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
@@ -75,6 +78,9 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 	weather, err := weatherClient.WeatherByCityCoord(coords)
 	if err != nil {
 		Logger.Warn("Return Cached-Fallback")
+		playlist, _ := GetFallBackPlayList()
+		json.NewEncoder(w).Encode(playlist)
+		return
 	}
 	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
 	playlist, err := playlistByStyleAndCountry(genre, weather.Sys.Country)
