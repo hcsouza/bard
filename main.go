@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
+	. "github.com/hcsouza/bard/config"
 	"github.com/hcsouza/bard/handlers"
 	. "github.com/hcsouza/bard/logger"
 	"github.com/hcsouza/bard/shield"
@@ -18,7 +20,7 @@ func setupHandlers() *mux.Router {
 		HandlerFunc(handlers.MusicByCityNameHandler).
 		Name("ByName")
 
-	r.HandleFunc("/musics/coords", handlers.MusicByCityCoordHandler).
+	r.HandleFunc("/musics/city", handlers.MusicByCityCoordHandler).
 		Queries("lat", "{lat}", "lon", "{lon}").
 		Name("ByCoord")
 
@@ -27,9 +29,10 @@ func setupHandlers() *mux.Router {
 
 func main() {
 	r := setupHandlers()
+	port := fmt.Sprintf(":%s", Config.BardApi.Port)
 
-	Logger.Message("==> Main server is started")
-	Logger.Message("listening on :8088")
+	Logger.Message("Server is started!")
+	Logger.Message(fmt.Sprintf("Listening on :%s", port))
 
-	http.ListenAndServe(":8088", r)
+	http.ListenAndServe(port, r)
 }

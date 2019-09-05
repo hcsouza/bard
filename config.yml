@@ -1,4 +1,6 @@
 development: &development
+  BardApi:
+    Port: 8088
   WeatherApi:
     Appid: "69075f"
     Url: "http://api.openweathermap.org/data/2.5/weather"

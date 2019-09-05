@@ -42,9 +42,18 @@ func (client *Client) TracksByCountryAndGenre(country, genre string) (music.Play
 	searchKey := fmt.Sprintf("%s:%s", country, genre)
 
 	it, err := client.memcacheClient.Get(searchKey)
-	if err != nil {
+	switch err {
+	case memcache.ErrServerError:
 		Logger.Error(fmt.Sprintf("Error on Get from memcache: %s ", err))
 		return result, err
+	case memcache.ErrCacheMiss:
+		Logger.Error(fmt.Sprintf("Key not found on cache: %s ", err))
+		return result, err
+	default:
+		if err != nil {
+			Logger.Error(fmt.Sprintf("Error on %s ", err))
+			return result, err
+		}
 	}
 
 	err = json.Unmarshal([]byte(it.Value), &result)

@@ -23,6 +23,10 @@ func init() {
 	appContainer = CreateContainer()
 }
 
+func SetContainerApp(container di.Container) {
+	appContainer = container
+}
+
 func CreateContainer() di.Container {
 	builder, err := di.NewBuilder()
 	if err != nil {
