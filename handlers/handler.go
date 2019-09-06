@@ -97,15 +97,16 @@ func playlistByStyleAndCountry(genre, country string) (music.Playlist, error) {
 
 	if err == nil {
 		return playlist, err
-	}
-	if err == memcache.ErrCacheMiss {
-		playlist, err = music.PlaylistByStyleAndCountry(genre, country)
-		if err == nil {
-			cacheClient.AddTracksByCountryAndGenre(country, genre, playlist)
+	} else {
+		if err == memcache.ErrCacheMiss {
+			playlist, err = music.PlaylistByStyleAndCountry(genre, country)
+			if err == nil {
+				_ = cacheClient.AddTracksByCountryAndGenre(country, genre, playlist)
+				return playlist, err
+			}
 		}
-		return playlist, err
 	}
-	Logger.Info("Returning FallBackList")
+	Logger.Info("Can't get track from cache and apis - Returning FallBackList")
 	return GetFallBackPlayList()
 }
 
