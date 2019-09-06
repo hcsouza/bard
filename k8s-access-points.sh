@@ -13,4 +13,4 @@ sudo minikube -p $cluster service bard-api-service --url | cut -d ' ' -f 2 | awk
 echo ""
 sudo minikube -p $cluster service bard-metrics-service --url | cut -d ' ' -f 2 | awk '{print "Metrics Stream: "  $1 "/hystrix.stream"  }'
 echo ""
-sudo minikube -p $cluster service bard-metrics-dash --url | cut -d ' ' -f 2 | awk '{print "Metrics Stream: "  $1   }'
+sudo minikube -p $cluster service bard-metrics-dash --url | cut -d ' ' -f 2 | awk '{print "Metrics Dashboard: "  $1   }'

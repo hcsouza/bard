@@ -17,7 +17,7 @@ var (
 	}
 )
 
-type weatherResult struct {
+type WeatherResult struct {
 	Coord struct {
 		Lon float64 `json:"lon"`
 		Lat float64 `json:"lat"`
@@ -45,15 +45,15 @@ func NewWeatherClient() weatherClient {
 	return weatherClient{}
 }
 
-func TemperatureByCityName(city string) (weather weatherResult, err error) {
+func TemperatureByCityName(city string) (weather WeatherResult, err error) {
 	client := NewWeatherClient()
 	weather, err = client.WeatherByCityName(city)
 	return
 }
 
-func (client weatherClient) WeatherByCityName(city string) (weatherResult, error) {
+func (client weatherClient) WeatherByCityName(city string) (WeatherResult, error) {
 
-	searchUrl := createUrlRequestByCityName(city)
+	searchUrl := CreateUrlRequestByCityName(city)
 	request := shield.CommandRequest{
 		"TemperatureByCityName",
 		searchUrl,
@@ -62,15 +62,15 @@ func (client weatherClient) WeatherByCityName(city string) (weatherResult, error
 
 	buffer, err := shield.ExecuteCommandWithCircuitBreaker(request)
 	if err != nil {
-		return weatherResult{}, err
+		return WeatherResult{}, err
 	}
 
 	return client.parseJsonToResult(buffer)
 }
 
-func (client weatherClient) WeatherByCityCoord(coords Coordinates) (weatherResult, error) {
+func (client weatherClient) WeatherByCityCoord(coords Coordinates) (WeatherResult, error) {
 
-	searchUrl := createUrlRequestByCoord(coords)
+	searchUrl := CreateUrlRequestByCoord(coords)
 	request := shield.CommandRequest{
 		"TemperatureByCityCoord",
 		searchUrl,
@@ -79,13 +79,13 @@ func (client weatherClient) WeatherByCityCoord(coords Coordinates) (weatherResul
 
 	buffer, err := shield.ExecuteCommandWithCircuitBreaker(request)
 	if err != nil {
-		return weatherResult{}, err
+		return WeatherResult{}, err
 	}
 
 	return client.parseJsonToResult(buffer)
 }
 
-func (client weatherClient) parseJsonToResult(jsonApi []byte) (result weatherResult, err error) {
+func (client weatherClient) parseJsonToResult(jsonApi []byte) (result WeatherResult, err error) {
 
 	err = json.Unmarshal([]byte(jsonApi), &result)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client weatherClient) parseJsonToResult(jsonApi []byte) (result weatherRes
 	return result, err
 }
 
-func createUrlRequestByCoord(coords Coordinates) string {
+func CreateUrlRequestByCoord(coords Coordinates) string {
 
 	uriBase := Config.WeatherApi.Url
 	apiKey := Config.WeatherApi.Appid
@@ -107,7 +107,7 @@ func createUrlRequestByCoord(coords Coordinates) string {
 	return search
 }
 
-func createUrlRequestByCityName(cityName string) string {
+func CreateUrlRequestByCityName(cityName string) string {
 
 	uriBase := Config.WeatherApi.Url
 	apiKey := Config.WeatherApi.Appid

@@ -12,9 +12,9 @@ development:
   environment:
     ENV: "development"
   links:
-    - memcached:memcached
+    - memcache:memcache
 
-memcached:
+memcache:
   image: memcached
   ports:
     - "11211:11211"
