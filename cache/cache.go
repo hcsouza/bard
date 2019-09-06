@@ -32,7 +32,7 @@ func (client *Client) AddTracksByCountryAndGenre(country, genre string, playlist
 		Logger.Error(fmt.Sprintf("Error on Set serialized to cache: %s", err))
 		return err
 	}
-	msg := fmt.Sprintf("Tracks for genre: %s on country: %s, adde to cache.", genre, country)
+	msg := fmt.Sprintf("Tracks for genre: %s on country: %s, added to cache.", genre, country)
 	Logger.Info(msg)
 	return err
 }

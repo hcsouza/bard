@@ -11,6 +11,10 @@ import (
 	"golang.org/x/oauth2/clientcredentials"
 )
 
+var (
+	ErrUnlauchedMarket = errors.New("Unlaunched market")
+)
+
 type Music struct {
 	Name   string `json:"name"`
 	Artist string `json:"artist"`
