@@ -38,6 +38,14 @@
   revision = "551aad21a6682b95329c1f5bd62ee5060d64f7e8"
 
 [[projects]]
+  digest = "1:0afa63759ae8c5aa13d813346e414e7ed3bde76a98f48b9ebe3272f5a5e2f7ec"
+  name = "github.com/franela/goblin"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "cd5d08fb4ede9eaac1812fdb513552e7404eae2e"
+  version = "0.0.2"
+
+[[projects]]
   digest = "1:abeb38ade3f32a92943e5be54f55ed6d6e3b6602761d74b4aab4c9dd45c18abd"
   name = "github.com/fsnotify/fsnotify"
   packages = ["."]
@@ -60,6 +68,14 @@
   pruneopts = "UT"
   revision = "00bdffe0f3c77e27d2cf6f5c70232a2d3e4d9c15"
   version = "v1.7.3"
+
+[[projects]]
+  digest = "1:574f4e0c57e045c9d109d23c60c586b2198eaead53daa97ed5f65c616e22a9b0"
+  name = "github.com/h2non/parth"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b4df798d65426f8c8ab5ca5f9987aec5575d26c9"
+  version = "v2.0.1"
 
 [[projects]]
   digest = "1:c0d19ab64b32ce9fe5cf4ddceba78d5bc9807f0016db6b1183599da3dcc24d10"
@@ -111,6 +127,14 @@
   pruneopts = "UT"
   revision = "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
   version = "v1.1.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:398b067cd5b79e0a0c067f5b3a23cf369567d93de8e4d9bf364fda4382b51f63"
+  name = "github.com/nbio/st"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "e9e8d9816f3268def6dcbd2dea03301f40e9de94"
 
 [[projects]]
   digest = "1:93131d8002d7025da13582877c32d1fc302486775a1b06f62241741006428c5e"
@@ -273,6 +297,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:80d8747c77f6b6c8e77232cd04aa93cbf4489836d47e487566d94e6ecbe23082"
+  name = "gopkg.in/h2non/gock.v1"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3ffff9b1aa8200275a5eb219c5f9c62bd27acb31"
+  version = "v1.0.15"
+
+[[projects]]
   digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
@@ -286,13 +318,16 @@
   input-imports = [
     "github.com/afex/hystrix-go/hystrix",
     "github.com/bradfitz/gomemcache/memcache",
+    "github.com/franela/goblin",
     "github.com/gorilla/mux",
+    "github.com/nbio/st",
     "github.com/sadlil/gologger",
     "github.com/sarulabs/di",
     "github.com/spf13/viper",
     "github.com/zmb3/spotify",
     "golang.org/x/oauth2/clientcredentials",
     "gopkg.in/eapache/go-resiliency.v1/retrier",
+    "gopkg.in/h2non/gock.v1",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

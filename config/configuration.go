@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"os"
+	"path"
 )
 
 type Configuration struct {
@@ -35,7 +36,12 @@ var Config Configuration
 
 func init() {
 	var err error
-	configPaths := "./"
+	configPaths := "."
+
+	pwd, _ := os.Getwd()
+	if basePath := path.Base(pwd); basePath != "bard" {
+		configPaths = "../"
+	}
 
 	viper.SetConfigName("config")
 	viper.AddConfigPath(configPaths)

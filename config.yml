@@ -2,11 +2,23 @@ development: &development
   BardApi:
     Port: 8088
   WeatherApi:
-    Appid: "69075f"
+    Appid: "69075f27ec95ce1dcd970bfc4eb5233f"
     Url: "http://api.openweathermap.org/data/2.5/weather"
   SpotifyApi:
-    ClientId: "dbe6"
-    SecretKey: "6556"
+    ClientId: "dbe65979f2f8423e99ac8cde21a4b688"
+    SecretKey: "65562b6732b0485ab43b595c9db726cb"
+  Memcache:
+    Host: "memcache:11211"
+
+test:
+  BardApi:
+    Port: 8088
+  WeatherApi:
+    Appid: "1234"
+    Url: "http://api.openweathermap.org/data/2.5/weather"
+  SpotifyApi:
+    ClientId: "112233"
+    SecretKey: "7ccd"
   Memcache:
     Host: "memcache:11211"
 
