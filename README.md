@@ -6,6 +6,75 @@ Basically the consumer can get weather information by city name or coordinates, 
 
 This api consume two external services https://openweathermap.org for weather and  https://developer.spotify.com for music tracks. For deal with this dependecies the api was builded using circuit-breaker pattern, retries and cache.
 
+### Resources
+
+#### Tracks by City Name
+
+**GET** http://$endpoint_api:8088/musics/city?name=london
+
+Response: 200
+
+```json
+{
+   "musics":[
+      {
+         "name":"Señorita",
+         "artist":"Shawn Mendes"
+      },
+      {
+         "name":"Take Me Back to London (feat. Stormzy)",
+         "artist":"Ed Sheeran"
+      },
+      {
+         "name":"Beautiful People (feat. Khalid)",
+         "artist":"Ed Sheeran"
+      },
+      {
+         "name":"How Do You Sleep?",
+         "artist":"Sam Smith"
+      },
+      {
+         "name":"Higher Love",
+         "artist":"Kygo"
+      }
+   ]
+}
+ ``` 
+
+#### Tracks by City Coords
+
+**GET** http://$endpoint_api:8088/musics/city?lat=51.51&lon=-0.13
+
+Response: 200
+
+```json
+{
+   "musics":[
+      {
+         "name":"Señorita",
+         "artist":"Shawn Mendes"
+      },
+      {
+         "name":"Take Me Back to London (feat. Stormzy)",
+         "artist":"Ed Sheeran"
+      },
+      {
+         "name":"Beautiful People (feat. Khalid)",
+         "artist":"Ed Sheeran"
+      },
+      {
+         "name":"How Do You Sleep?",
+         "artist":"Sam Smith"
+      },
+      {
+         "name":"Higher Love",
+         "artist":"Kygo"
+      }
+   ]
+}
+ ``` 
+
+
 ### Tech
 
 Bard api was built using [Golang](https://golang.org/) and some tools:
