@@ -8,6 +8,10 @@ This api consume two external services https://openweathermap.org for weather an
 
 ### Resources
 
+**GET** http://&endpoint_api:8088
+
+Api description on json format
+
 #### Tracks by City Name
 
 **GET** http://$endpoint_api:8088/musics/city?name=london
