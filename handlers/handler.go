@@ -91,6 +91,11 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 	json.NewEncoder(w).Encode(playlist)
 }
 
+func DescribeResources(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	http.ServeFile(w, r, "describe.json")
+}
+
 func playlistByStyleAndCountry(genre, country string) (music.Playlist, error) {
 
 	cacheClient := injection.Get("CacheClient").(*cache.Client)

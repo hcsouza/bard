@@ -24,6 +24,8 @@ func setupHandlers() *mux.Router {
 		Queries("lat", "{lat}", "lon", "{lon}").
 		Name("ByCoord")
 
+	r.HandleFunc("/", handlers.DescribeResources)
+
 	return r
 }
 
