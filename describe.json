@@ -1,0 +1,99 @@
+{
+   "consumes":[
+      "application/json"
+   ],
+   "produces":[
+      "application/json",
+      "text/plain"
+   ],
+   "schemes":[
+      "http"
+   ],
+   "swagger":"2.0",
+   "info":{
+      "description":"RestApi to list music tracks using weather and location with parameters.",
+      "title":"Bard api",
+      "contact":{
+         "name":"hcsouza",
+         "email":"hcsouza@gmail.com"
+      },
+      "version":"0.0.1"
+   },
+   "paths":{
+      "/musics/city?name":{
+         "get":{
+            "description":"Returns a playlist using coords",
+            "consumes":[
+               "application/json"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "type":"float",
+                  "description":"The float number corresponding to Latitude",
+                  "name":"lat",
+                  "in":"query",
+                  "required":true
+               },
+               {
+                  "type":"float",
+                  "description":"The float number corresponding to Longitude",
+                  "name":"lon",
+                  "in":"query",
+                  "required":true
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"The track list",
+                  "type":"application/json",
+                  "examples":{
+                     "musics":[
+                        {
+                           "name":"Take Me Back to London (feat. Stormzy)",
+                           "artist":"Ed Sheeran"
+                        }
+                     ]
+                  }
+               }
+            }
+         }
+      },
+      "/musics/city?name={n}":{
+         "get":{
+            "description":"Returns a playlist using coords",
+            "consumes":[
+               "application/json"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "type":"string",
+                  "description":"The city name that will be used to filter tracks",
+                  "name":"name",
+                  "in":"query",
+                  "required":true
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"The track list",
+                  "type":"application/json",
+                  "examples":{
+                     "musics":[
+                        {
+                           "name":"Take Me Back to London (feat. Stormzy)",
+                           "artist":"Ed Sheeran"
+                        }
+                     ]
+                  }
+               }
+            }
+         }
+      }
+   }
+}
