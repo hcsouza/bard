@@ -1,5 +1,5 @@
 development:
-  hostname: 'gagarin001'
+  hostname: 'machine001'
   build: .
   dockerfile: './Dockerfile'
   tty: true
@@ -19,4 +19,25 @@ memcache:
   ports:
     - "11211:11211"
 
+web:
+  hostname: 'machine001'
+  build: .
+  dockerfile: './Dockerfile'
+  tty: true
+  stdin_open: true
+  command: >
+    bash -c "dep ensure --vendor-only &&
+    go run main.go"
+  volumes:
+    - .:/go/src/github.com/hcsouza/bard
+  environment:
+    ENV: "development"
+  links:
+    - memcache:memcache
+    - dashboard:dashboard
+
+dashboard:
+  image: grissomsh/hystrix-dashboard
+  ports:
+    - 8080:8080
 
