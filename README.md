@@ -1,7 +1,8 @@
 # Bard
 
 Bard is a rest-api to list tracks using location and weather.
-Basically the consumer can get tracks by city name or coordinates, and then using the weather result and country the tracks are filtred.
+
+Basically the consumer can get weather information by city name or coordinates, and then use the weather result and country to filter tracks.
 
 This api consume two external services https://openweathermap.org for weather and  https://developer.spotify.com for music tracks. For deal with this dependecies the api was builded using circuit-breaker pattern, retries and cache.
 
