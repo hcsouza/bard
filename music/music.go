@@ -24,7 +24,19 @@ type Playlist struct {
 	Musics []Music `json:"musics"`
 }
 
-func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, error) {
+type MusicService interface {
+	SearchOpt(query string, t spotify.SearchType, opt *spotify.Options) (*spotify.SearchResult, error)
+}
+
+type musicClient struct {
+	service MusicService
+}
+
+func NewMusicClient(service MusicService) *musicClient {
+	return &musicClient{service}
+}
+
+func NewSpotifyClient() MusicService {
 
 	config := &clientcredentials.Config{
 		ClientID:     Config.SpotifyApi.ClientId,
@@ -35,8 +47,11 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 	if err != nil {
 		Logger.Error(fmt.Sprintf("Couldn't get app music token: %s", err))
 	}
-
 	client := spotify.Authenticator{}.NewClient(token)
+	return &client
+}
+
+func (client *musicClient) PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, error) {
 
 	limit := 5
 	if country == "" {
@@ -48,7 +63,7 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 	chSuccess := make(chan *spotify.SearchResult, 1)
 	errors := hystrix.Go("PlaylistByCountry",
 		func() error {
-			results, err := client.SearchOpt(query, spotify.SearchTypeTrack, opts)
+			results, err := client.service.SearchOpt(query, spotify.SearchTypeTrack, opts)
 			if err != nil {
 				Logger.Error(fmt.Sprintf("Error on Search Tracks: %s", err))
 				return err
@@ -65,13 +80,13 @@ func PlaylistByStyleAndCountry(musicStyle string, country string) (Playlist, err
 	select {
 	case out := <-chSuccess:
 		Logger.Info("Successful call on PlaylistByCountry")
-		return parseResultToPlayList(out)
+		return client.parseResultToPlayList(out)
 	case err := <-errors:
 		return Playlist{}, err
 	}
 }
 
-func parseResultToPlayList(results *spotify.SearchResult) (Playlist, error) {
+func (client *musicClient) parseResultToPlayList(results *spotify.SearchResult) (Playlist, error) {
 	var playList Playlist
 	var err error
 

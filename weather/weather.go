@@ -123,9 +123,9 @@ func (client weatherClient) MusicStyleByTemperature(temperature float32) string 
 	switch {
 	case temperature > 30:
 		return StylesByTemperature["Above30"]
-	case temperature > 15 && temperature <= 30:
+	case temperature >= 15 && temperature <= 30:
 		return StylesByTemperature["Above15"]
-	case temperature > 10 && temperature <= 14.99:
+	case temperature > 10 && temperature < 15:
 		return StylesByTemperature["Above10"]
 	default:
 		return StylesByTemperature["Below10"]

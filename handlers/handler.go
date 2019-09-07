@@ -92,14 +92,18 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 }
 
 func playlistByStyleAndCountry(genre, country string) (music.Playlist, error) {
+
 	cacheClient := injection.Get("CacheClient").(*cache.Client)
 	playlist, err := cacheClient.TracksByCountryAndGenre(country, genre)
+
+	service := injection.Get("MusicClientSearcher").(music.MusicService)
+	musicClient := music.NewMusicClient(service)
 
 	if err == nil {
 		return playlist, err
 	} else {
 		if err == memcache.ErrCacheMiss {
-			playlist, err = music.PlaylistByStyleAndCountry(genre, country)
+			playlist, err = musicClient.PlaylistByStyleAndCountry(genre, country)
 			if err == nil {
 				_ = cacheClient.AddTracksByCountryAndGenre(country, genre, playlist)
 				return playlist, err
@@ -111,7 +115,11 @@ func playlistByStyleAndCountry(genre, country string) (music.Playlist, error) {
 }
 
 func GetFallBackPlayList() (music.Playlist, error) {
-	playlist, err := music.PlaylistByStyleAndCountry("rock", "us")
+
+	service := injection.Get("MusicClientSearcher").(music.MusicService)
+	musicClient := music.NewMusicClient(service)
+
+	playlist, err := musicClient.PlaylistByStyleAndCountry("rock", "us")
 	if err != nil {
 		Logger.Error(fmt.Sprintf("Error on get FallbackList on music api: %s", err))
 		musicOne := music.Music{"Patience", "Guns N' Roses"}

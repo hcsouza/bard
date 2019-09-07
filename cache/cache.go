@@ -13,7 +13,12 @@ type Client struct {
 	memcacheClient *memcache.Client
 }
 
-func NewCacheClient() *Client {
+type CacheMusicService interface {
+	TracksByCountryAndGenre(string, string) (music.Playlist, error)
+	AddTracksByCountryAndGenre(string, string, music.Playlist) error
+}
+
+func NewCacheClient() CacheMusicService {
 	mc := memcache.New(Config.Memcache.Host)
 	return &Client{mc}
 }

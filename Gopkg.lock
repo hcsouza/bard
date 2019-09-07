@@ -38,6 +38,14 @@
   revision = "551aad21a6682b95329c1f5bd62ee5060d64f7e8"
 
 [[projects]]
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  pruneopts = "UT"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
+
+[[projects]]
   digest = "1:0afa63759ae8c5aa13d813346e414e7ed3bde76a98f48b9ebe3272f5a5e2f7ec"
   name = "github.com/franela/goblin"
   packages = ["."]
@@ -52,6 +60,14 @@
   pruneopts = "UT"
   revision = "c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9"
   version = "v1.4.7"
+
+[[projects]]
+  digest = "1:20e7f53e599cc89d263e716010d5c3b7f223ef28ed9bbf23cf81a5d33558bb4f"
+  name = "github.com/gojuno/minimock"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "233d1ef14d3d667c1cd0d5ed9fc684e5d699ae84"
+  version = "v3.0.4"
 
 [[projects]]
   digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
@@ -143,6 +159,14 @@
   pruneopts = "UT"
   revision = "728039f679cbcd4f6a54e080d2219a4c4928c546"
   version = "v1.4.0"
+
+[[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  pruneopts = "UT"
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:061a10a76b0e34283ce6b0abbd8ad83e02cc8c2f46c56ce584ade36918f4078c"
@@ -319,6 +343,7 @@
     "github.com/afex/hystrix-go/hystrix",
     "github.com/bradfitz/gomemcache/memcache",
     "github.com/franela/goblin",
+    "github.com/gojuno/minimock",
     "github.com/gorilla/mux",
     "github.com/nbio/st",
     "github.com/sadlil/gologger",
