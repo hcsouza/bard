@@ -52,7 +52,7 @@ With an environemt with kubernetes ( a suggestion is [Minikube](https://github.c
 ```
 To see all access points you can run another sh script:
 ```sh
-./k8s-access-points.sh
+./k8s-access-points.sh  ClusterName
 ```
 This script will print all access points of project:
 1. RestApi resource
