@@ -29,17 +29,14 @@ func MusicByCityNameHandler(w http.ResponseWriter, request *http.Request) {
 	weather, err := weatherClient.WeatherByCityName(cityName)
 	if err != nil {
 		Logger.Warn("Return Cached-Fallback")
-		playlist, _ := GetFallBackPlayList()
-		json.NewEncoder(w).Encode(playlist)
+		json.NewEncoder(w).Encode(GetFallBackPlayList())
 		return
 	}
 
-	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
-	playlist, err := playlistByStyleAndCountry(genre, weather.Sys.Country)
+	playlist, err := playlistByStyleAndCountry(
+		weatherClient.MusicStyleByTemperature(weather.Main.Temp),
+		weather.Sys.Country)
 
-	if err == ErrFallbackTracks {
-		Logger.Error(err.Error())
-	}
 	json.NewEncoder(w).Encode(playlist)
 }
 
@@ -47,30 +44,10 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	vars := mux.Vars(request)
-	coords := weather.Coordinates{}
 
-	value, err := strconv.ParseFloat(vars["lat"], 32)
-	if err == nil {
-		coords.Latitude = float32(value)
-	} else {
-		Logger.Error(fmt.Sprintf("Params wrong format: %s", err))
-		badrequest, _ := json.Marshal(struct {
-			Message string `json:"message"`
-		}{"Params wrong format."})
-
-		http.Error(w, string(badrequest), http.StatusBadRequest)
-		return
-	}
-	value, err = strconv.ParseFloat(vars["lon"], 32)
-	if err == nil {
-		coords.Longitude = float32(value)
-	} else {
-		Logger.Error(fmt.Sprintf("Params wrong format: %s", err))
-		badrequest, _ := json.Marshal(struct {
-			Message string `json:"message"`
-		}{"Params wrong format."})
-
-		http.Error(w, string(badrequest), http.StatusBadRequest)
+	coords, err := checkCoords(vars)
+	if err != nil {
+		BadRequestCoords(w)
 		return
 	}
 
@@ -78,22 +55,47 @@ func MusicByCityCoordHandler(w http.ResponseWriter, request *http.Request) {
 	weather, err := weatherClient.WeatherByCityCoord(coords)
 	if err != nil {
 		Logger.Warn("Return Cached-Fallback")
-		playlist, _ := GetFallBackPlayList()
-		json.NewEncoder(w).Encode(playlist)
+		json.NewEncoder(w).Encode(GetFallBackPlayList())
 		return
 	}
-	genre := weatherClient.MusicStyleByTemperature(weather.Main.Temp)
-	playlist, err := playlistByStyleAndCountry(genre, weather.Sys.Country)
 
-	if err == ErrFallbackTracks {
-		Logger.Error(err.Error())
-	}
+	playlist, err := playlistByStyleAndCountry(
+		weatherClient.MusicStyleByTemperature(weather.Main.Temp),
+		weather.Sys.Country)
+
 	json.NewEncoder(w).Encode(playlist)
 }
 
 func DescribeResources(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	http.ServeFile(w, r, "describe.json")
+}
+
+func checkCoords(vars map[string]string) (weather.Coordinates, error) {
+	coords := weather.Coordinates{}
+	value, err := strconv.ParseFloat(vars["lat"], 32)
+	if err == nil {
+		coords.Latitude = float32(value)
+	} else {
+		return coords, errors.New(fmt.Sprintf("Params wrong format: %s", err))
+	}
+
+	value, err = strconv.ParseFloat(vars["lon"], 32)
+	if err == nil {
+		coords.Longitude = float32(value)
+	} else {
+		return coords, errors.New(fmt.Sprintf("Params wrong format: %s", err))
+	}
+	return coords, err
+}
+
+func BadRequestCoords(w http.ResponseWriter) {
+	badrequest, _ := json.Marshal(struct {
+		Message string `json:"message"`
+	}{"Params wrong format."})
+
+	http.Error(w, string(badrequest), http.StatusBadRequest)
+	return
 }
 
 func playlistByStyleAndCountry(genre, country string) (music.Playlist, error) {
@@ -116,19 +118,19 @@ func playlistByStyleAndCountry(genre, country string) (music.Playlist, error) {
 		}
 	}
 	Logger.Info("Can't get track from cache and apis - Returning FallBackList")
-	return GetFallBackPlayList()
+	return GetFallBackPlayList(), err
 }
 
-func GetFallBackPlayList() (music.Playlist, error) {
+func GetFallBackPlayList() music.Playlist {
 
 	service := injection.Get("MusicClientSearcher").(music.MusicService)
 	musicClient := music.NewMusicClient(service)
-
 	playlist, err := musicClient.PlaylistByStyleAndCountry("rock", "us")
+
 	if err != nil {
 		Logger.Error(fmt.Sprintf("Error on get FallbackList on music api: %s", err))
 		musicOne := music.Music{"Patience", "Guns N' Roses"}
-		return music.Playlist{[]music.Music{musicOne}}, ErrFallbackTracks
+		return music.Playlist{[]music.Music{musicOne}}
 	}
-	return playlist, err
+	return playlist
 }
